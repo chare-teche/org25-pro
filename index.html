@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ORG 25 PRO — Ethiopia's #1 Keyboard Style & Rhythm Store</title>
+  
+  <meta name="description" content="Ethiopian keyboard styles, Yamaha styles, sound packs, voices, and multipads for the ORG 25 mobile app by Chare Chanako. Instant Telegram delivery.">
+  <meta name="theme-color" content="#0a1020">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ORG 25 PRO">
+
+  <!-- Open Graph / SEO -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ORG 25 PRO — Ethiopian Keyboard Styles">
+  <meta property="og:description" content="Ethiopia's #1 Keyboard Style & Rhythm Store for ORG 25.">
+  <meta property="og:image" content="assets/logo.png">
+
+  <!-- Organization JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ORG 25 PRO",
+    "url": "https://t.me/org25_et_bot",
+    "logo": "assets/logo.png",
+    "founder": {
+      "@type": "Person",
+      "name": "Chare Chanako"
+    },
+    "description": "Ethiopian keyboard styles, Yamaha styles, sound packs, and rhythms for ORG 25.",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+251981764920",
+      "contactType": "customer service",
+      "email": "charechanako6@gmail.com"
+    }
+  }
+  </script>
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Ethiopian Flag Ribbon Accent -->
+    <div class="ethio-ribbon" aria-hidden="true">
+      <span class="ribbon-green"></span>
+      <span class="ribbon-yellow"></span>
+      <span class="ribbon-red"></span>
+    </div>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-brand">
+        <img src="assets/logo.png" alt="ORG 25 Logo" class="brand-logo" onerror="this.style.display='none'">
+        <div class="brand-text">
+          <span class="brand-title">ORG 25 <span class="gold-badge">PRO</span></span>
+        </div>
+      </div>
+      <div class="header-controls">
+        <button id="lang-toggle-btn" class="pill-btn" aria-label="Toggle Language">
+          <span id="lang-label">አማ</span>
+        </button>
+        <button id="theme-toggle-btn" class="pill-btn" aria-label="Toggle Theme">
+          <span id="theme-icon">☀️</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Announcement Banner -->
+    <div id="announcement-banner" class="announcement-banner" style="display: none;">
+      <span class="banner-icon">📢</span>
+      <p id="announcement-text" class="banner-text"></p>
+    </div>
+
+    <!-- Main Content Root -->
+    <main id="app-content" class="content-scroll" role="main"></main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav" aria-label="Main Navigation">
+      <a href="#home" class="nav-item" data-tab="home">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label" data-i18n="nav_home">Home</span>
+      </a>
+      <a href="#styles" class="nav-item" data-tab="styles">
+        <span class="nav-icon">🎹</span>
+        <span class="nav-label" data-i18n="nav_styles">Styles</span>
+      </a>
+      <a href="#learn" class="nav-item" data-tab="learn">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label" data-i18n="nav_learn">Learn</span>
+      </a>
+      <a href="#free" class="nav-item" data-tab="free">
+        <span class="nav-icon">🎁</span>
+        <span class="nav-label" data-i18n="nav_free">Free</span>
+      </a>
+      <a href="#contact" class="nav-item" data-tab="contact">
+        <span class="nav-icon">💬</span>
+        <span class="nav-label" data-i18n="nav_contact">Contact</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Detail Bottom Sheet Modal -->
+  <div id="detail-sheet-backdrop" class="sheet-backdrop" aria-hidden="true">
+    <div class="detail-sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+      <button id="sheet-close-btn" class="sheet-close" aria-label="Close sheet">&times;</button>
+      <div class="sheet-body" id="sheet-content"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
