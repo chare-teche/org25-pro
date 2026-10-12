@@ -1,121 +1,158 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>ORG 25 PRO — Ethiopia's #1 Keyboard Style & Rhythm Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>ORG 25 PRO | Ethiopian Keyboard Styles & Rhythms</title>
   
-  <meta name="description" content="Ethiopian keyboard styles, Yamaha styles, sound packs, voices, and multipads for the ORG 25 mobile app by Chare Chanako. Instant Telegram delivery.">
+  <meta name="description" content="Premium Ethiopian Sets, Rhythms, and Styles for ORG 24 & ORG 25 keyboard workstations. Curated by Chare Chanako.">
   <meta name="theme-color" content="#0a1020">
-  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="ORG 25 PRO">
-
-  <!-- Open Graph / SEO -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="ORG 25 PRO — Ethiopian Keyboard Styles">
-  <meta property="og:description" content="Ethiopia's #1 Keyboard Style & Rhythm Store for ORG 25.">
-  <meta property="og:image" content="assets/logo.png">
-
-  <!-- Organization JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "ORG 25 PRO",
-    "url": "https://t.me/org25_et_bot",
-    "logo": "assets/logo.png",
-    "founder": {
-      "@type": "Person",
-      "name": "Chare Chanako"
-    },
-    "description": "Ethiopian keyboard styles, Yamaha styles, sound packs, and rhythms for ORG 25.",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+251981764920",
-      "contactType": "customer service",
-      "email": "charechanako6@gmail.com"
-    }
-  }
-  </script>
-
+  
+  <!-- Favicons and Web App Manifest -->
   <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
-  <link rel="icon" type="image/png" href="assets/logo.png">
+
+  <!-- Core Stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-container">
-    <!-- Ethiopian Flag Ribbon Accent -->
-    <div class="ethio-ribbon" aria-hidden="true">
-      <span class="ribbon-green"></span>
-      <span class="ribbon-yellow"></span>
-      <span class="ribbon-red"></span>
+
+  <!-- Native Animated Startup Splash Screen -->
+  <aside id="splash-screen" class="splash-container" aria-label="Loading ORG 25 PRO">
+    <div class="splash-content">
+      <div class="splash-glow"></div>
+      <img src="assets/logo.png" alt="ORG 25 PRO Logo" class="splash-anim-logo">
+      <h1 class="splash-brand">ORG 25 <span class="splash-gold">PRO</span></h1>
+      <div class="splash-loader-bar">
+        <div class="splash-loader-progress"></div>
+      </div>
+      <span class="splash-tag" data-i18n="splash_tag">ETHIOPIAN RHYTHMS & SETS</span>
+    </div>
+  </aside>
+
+  <!-- Sticky Glassmorphic Header -->
+  <header class="app-header">
+    <div class="brand-group">
+      <img src="assets/logo.png" alt="Emblem" class="brand-avatar">
+      <div class="brand-meta">
+        <h2 class="brand-title">ORG 25 <span class="splash-gold">PRO</span></h2>
+        <span class="brand-founder" data-i18n="founder">By Chare Chanako</span>
+      </div>
     </div>
 
-    <!-- Header -->
-    <header class="app-header">
-      <div class="header-brand">
-        <img src="assets/logo.png" alt="ORG 25 Logo" class="brand-logo" onerror="this.style.display='none'">
-        <div class="brand-text">
-          <span class="brand-title">ORG 25 <span class="gold-badge">PRO</span></span>
+    <div class="header-actions">
+      <!-- Language Toggle Button -->
+      <button id="lang-toggle" class="btn-pill" aria-label="Switch Language">አማ</button>
+
+      <!-- Telegram Direct Link -->
+      <a href="https://t.me/charisha_bot" target="_blank" rel="noopener noreferrer" class="btn-pill telegram-pill" aria-label="Open Telegram Bot">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+        </svg>
+        <span>Bot</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Search & Filter Bar -->
+  <section class="search-section" aria-label="Search Styles">
+    <div class="search-input-wrap">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="search" id="style-search" placeholder="Search styles, sets, or rhythms..." aria-label="Search rhythms" data-i18n-placeholder="search_placeholder">
+    </div>
+  </section>
+
+  <!-- Horizontal Scrolling Category Chips -->
+  <nav class="category-tabs" aria-label="Filter by Rhythm Category">
+    <button class="cat-btn active" data-cat="all" data-i18n="tab_all">All Styles</button>
+    <button class="cat-btn" data-cat="set" data-i18n="tab_set">Full Sets</button>
+    <button class="cat-btn" data-cat="choche" data-i18n="tab_choche">Choche</button>
+    <button class="cat-btn" data-cat="gurage" data-i18n="tab_gurage">Gurage</button>
+    <button class="cat-btn" data-cat="oromo" data-i18n="tab_oromo">Oromo</button>
+    <button class="cat-btn" data-cat="tigray" data-i18n="tab_tigray">Tigray</button>
+    <button class="cat-btn" data-cat="guide" data-i18n="tab_guide">Payment & Guide</button>
+  </nav>
+
+  <!-- Main Catalog / Products Container -->
+  <main class="main-content">
+    
+    <!-- Dynamic Product Cards Grid -->
+    <section id="catalog-grid" class="product-grid" aria-live="polite"></section>
+
+    <!-- Payment Accounts and Verification Guide Section -->
+    <section id="guide-section" class="guide-container hidden" aria-labelledby="guide-heading">
+      <div class="guide-header-block">
+        <h3 id="guide-heading" class="guide-title" data-i18n="guide_heading">Payment Accounts & Verification</h3>
+        <p class="guide-sub" data-i18n="guide_sub">Transfer using your preferred payment method below, copy the transaction reference or screenshot, and send it to our Telegram bot for instant style delivery.</p>
+      </div>
+
+      <div class="payment-cards">
+        <!-- Commercial Bank of Ethiopia (CBE) -->
+        <article class="pay-card">
+          <div class="pay-info">
+            <span class="pay-label">Commercial Bank of Ethiopia (CBE)</span>
+            <strong class="pay-number" id="cbe-num">1000718384552</strong>
+            <span class="pay-holder">Chare Chanako</span>
+          </div>
+          <button class="copy-btn" onclick="copyToClipboard('cbe-num', this)" aria-label="Copy CBE Account Number">Copy</button>
+        </article>
+
+        <!-- Telebirr -->
+        <article class="pay-card">
+          <div class="pay-info">
+            <span class="pay-label">Telebirr</span>
+            <strong class="pay-number" id="telebirr-num">0981764920</strong>
+            <span class="pay-holder">Chare Chanako</span>
+          </div>
+          <button class="copy-btn" onclick="copyToClipboard('telebirr-num', this)" aria-label="Copy Telebirr Number">Copy</button>
+        </article>
+
+        <!-- Safaricom M-Pesa -->
+        <article class="pay-card">
+          <div class="pay-info">
+            <span class="pay-label">Safaricom M-Pesa</span>
+            <strong class="pay-number" id="mpesa-num">0716690573</strong>
+            <span class="pay-holder">Chare Chanako</span>
+          </div>
+          <button class="copy-btn" onclick="copyToClipboard('mpesa-num', this)" aria-label="Copy M-Pesa Number">Copy</button>
+        </article>
+      </div>
+
+      <!-- Quick Telegram Bot Verification Banner -->
+      <div class="guide-cta-card">
+        <div class="cta-text">
+          <strong data-i18n="cta_title">Completed Payment?</strong>
+          <span data-i18n="cta_desc">Tap below to submit your receipt directly to our delivery bot.</span>
         </div>
+        <a href="https://t.me/charisha_bot" target="_blank" rel="noopener noreferrer" class="btn-buy cta-btn" data-i18n="cta_btn">
+          Verify via Bot ⚡
+        </a>
       </div>
-      <div class="header-controls">
-        <button id="lang-toggle-btn" class="pill-btn" aria-label="Toggle Language">
-          <span id="lang-label">አማ</span>
-        </button>
-        <button id="theme-toggle-btn" class="pill-btn" aria-label="Toggle Theme">
-          <span id="theme-icon">☀️</span>
-        </button>
+    </section>
+
+  </main>
+
+  <!-- Floating Audio Preview Indicator Bar -->
+  <aside id="audio-bar" class="audio-player-bar hidden" aria-label="Active Rhythm Preview">
+    <div class="audio-meta">
+      <div class="audio-waves">
+        <span class="bar bar-1"></span>
+        <span class="bar bar-2"></span>
+        <span class="bar bar-3"></span>
       </div>
-    </header>
-
-    <!-- Announcement Banner -->
-    <div id="announcement-banner" class="announcement-banner" style="display: none;">
-      <span class="banner-icon">📢</span>
-      <p id="announcement-text" class="banner-text"></p>
+      <span id="playing-track-name" class="audio-track-title">Playing Rhythm Preview...</span>
     </div>
+    <button id="audio-stop-btn" class="audio-close-btn" aria-label="Stop audio preview">✕</button>
+  </aside>
 
-    <!-- Main Content Root -->
-    <main id="app-content" class="content-scroll" role="main"></main>
-
-    <!-- Bottom Navigation Bar -->
-    <nav class="bottom-nav" aria-label="Main Navigation">
-      <a href="#home" class="nav-item" data-tab="home">
-        <span class="nav-icon">🏠</span>
-        <span class="nav-label" data-i18n="nav_home">Home</span>
-      </a>
-      <a href="#styles" class="nav-item" data-tab="styles">
-        <span class="nav-icon">🎹</span>
-        <span class="nav-label" data-i18n="nav_styles">Styles</span>
-      </a>
-      <a href="#learn" class="nav-item" data-tab="learn">
-        <span class="nav-icon">📖</span>
-        <span class="nav-label" data-i18n="nav_learn">Learn</span>
-      </a>
-      <a href="#free" class="nav-item" data-tab="free">
-        <span class="nav-icon">🎁</span>
-        <span class="nav-label" data-i18n="nav_free">Free</span>
-      </a>
-      <a href="#contact" class="nav-item" data-tab="contact">
-        <span class="nav-icon">💬</span>
-        <span class="nav-label" data-i18n="nav_contact">Contact</span>
-      </a>
-    </nav>
-  </div>
-
-  <!-- Detail Bottom Sheet Modal -->
-  <div id="detail-sheet-backdrop" class="sheet-backdrop" aria-hidden="true">
-    <div class="detail-sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
-      <button id="sheet-close-btn" class="sheet-close" aria-label="Close sheet">&times;</button>
-      <div class="sheet-body" id="sheet-content"></div>
-    </div>
-  </div>
-
-  <!-- Toast Notification -->
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
+  <!-- Core Scripts -->
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
