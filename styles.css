@@ -28,16 +28,23 @@ body {
   min-height: 100vh;
 }
 
-/* Native Startup Splash Screen */
+/* Splash Screen with Automatic CSS Fade & Removal */
 .splash-container {
   position: fixed;
   inset: 0;
   background: radial-gradient(circle at center, #111c3b 0%, #0a1020 100%);
-  z-index: 9999;
+  z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: splashFadeOut 0.5s cubic-bezier(0.4, 0, 0.2, 1) 2.2s forwards;
+  pointer-events: none;
+}
+
+@keyframes splashFadeOut {
+  0% { opacity: 1; visibility: visible; }
+  99% { opacity: 0; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; display: none; }
 }
 
 .splash-content {
@@ -335,7 +342,7 @@ body {
   color: #0a1020;
 }
 
-/* Payment Guide Section */
+/* Payment Guide */
 .guide-container {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
@@ -444,7 +451,7 @@ body {
   padding: 10px 18px;
 }
 
-/* Floating Audio Visualizer Bar */
+/* Audio Visualizer Bar */
 .audio-player-bar {
   position: fixed;
   bottom: 16px;
