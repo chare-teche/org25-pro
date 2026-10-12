@@ -11,12 +11,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="ORG 25 PRO">
   
-  <!-- Favicons and Web App Manifest -->
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
 
-  <!-- Core Stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -30,7 +28,7 @@
       <div class="splash-loader-bar">
         <div class="splash-loader-progress"></div>
       </div>
-      <span class="splash-tag" data-i18n="splash_tag">ETHIOPIAN RHYTHMS & SETS</span>
+      <span class="splash-tag">ETHIOPIAN RHYTHMS & SETS</span>
     </div>
   </aside>
 
@@ -45,10 +43,7 @@
     </div>
 
     <div class="header-actions">
-      <!-- Language Toggle Button -->
       <button id="lang-toggle" class="btn-pill" aria-label="Switch Language">አማ</button>
-
-      <!-- Telegram Direct Link -->
       <a href="https://t.me/charisha_bot" target="_blank" rel="noopener noreferrer" class="btn-pill telegram-pill" aria-label="Open Telegram Bot">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
@@ -65,7 +60,7 @@
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
-      <input type="search" id="style-search" placeholder="Search styles, sets, or rhythms..." aria-label="Search rhythms" data-i18n-placeholder="search_placeholder">
+      <input type="search" id="style-search" placeholder="Search styles, sets, or rhythms..." aria-label="Search rhythms">
     </div>
   </section>
 
@@ -80,67 +75,60 @@
     <button class="cat-btn" data-cat="guide" data-i18n="tab_guide">Payment & Guide</button>
   </nav>
 
-  <!-- Main Catalog / Products Container -->
+  <!-- Main Catalog Container -->
   <main class="main-content">
-    
-    <!-- Dynamic Product Cards Grid -->
     <section id="catalog-grid" class="product-grid" aria-live="polite"></section>
 
-    <!-- Payment Accounts and Verification Guide Section -->
+    <!-- Payment & Guide Section -->
     <section id="guide-section" class="guide-container hidden" aria-labelledby="guide-heading">
       <div class="guide-header-block">
         <h3 id="guide-heading" class="guide-title" data-i18n="guide_heading">Payment Accounts & Verification</h3>
-        <p class="guide-sub" data-i18n="guide_sub">Transfer using your preferred payment method below, copy the transaction reference or screenshot, and send it to our Telegram bot for instant style delivery.</p>
+        <p class="guide-sub" data-i18n="guide_sub">Transfer using your preferred payment method below, copy the transaction reference, and send it to our Telegram bot for instant style delivery.</p>
       </div>
 
       <div class="payment-cards">
-        <!-- Commercial Bank of Ethiopia (CBE) -->
         <article class="pay-card">
           <div class="pay-info">
             <span class="pay-label">Commercial Bank of Ethiopia (CBE)</span>
             <strong class="pay-number" id="cbe-num">1000718384552</strong>
             <span class="pay-holder">Chare Chanako</span>
           </div>
-          <button class="copy-btn" onclick="copyToClipboard('cbe-num', this)" aria-label="Copy CBE Account Number">Copy</button>
+          <button class="copy-btn" onclick="copyToClipboard('cbe-num', this)">Copy</button>
         </article>
 
-        <!-- Telebirr -->
         <article class="pay-card">
           <div class="pay-info">
             <span class="pay-label">Telebirr</span>
             <strong class="pay-number" id="telebirr-num">0981764920</strong>
             <span class="pay-holder">Chare Chanako</span>
           </div>
-          <button class="copy-btn" onclick="copyToClipboard('telebirr-num', this)" aria-label="Copy Telebirr Number">Copy</button>
+          <button class="copy-btn" onclick="copyToClipboard('telebirr-num', this)">Copy</button>
         </article>
 
-        <!-- Safaricom M-Pesa -->
         <article class="pay-card">
           <div class="pay-info">
             <span class="pay-label">Safaricom M-Pesa</span>
             <strong class="pay-number" id="mpesa-num">0716690573</strong>
             <span class="pay-holder">Chare Chanako</span>
           </div>
-          <button class="copy-btn" onclick="copyToClipboard('mpesa-num', this)" aria-label="Copy M-Pesa Number">Copy</button>
+          <button class="copy-btn" onclick="copyToClipboard('mpesa-num', this)">Copy</button>
         </article>
       </div>
 
-      <!-- Quick Telegram Bot Verification Banner -->
       <div class="guide-cta-card">
         <div class="cta-text">
           <strong data-i18n="cta_title">Completed Payment?</strong>
           <span data-i18n="cta_desc">Tap below to submit your receipt directly to our delivery bot.</span>
         </div>
-        <a href="https://t.me/charisha_bot" target="_blank" rel="noopener noreferrer" class="btn-buy cta-btn" data-i18n="cta_btn">
+        <a href="https://t.me/charisha_bot" target="_blank" rel="noopener noreferrer" class="btn-buy cta-btn">
           Verify via Bot ⚡
         </a>
       </div>
     </section>
-
   </main>
 
-  <!-- Floating Audio Preview Indicator Bar -->
-  <aside id="audio-bar" class="audio-player-bar hidden" aria-label="Active Rhythm Preview">
+  <!-- Floating Audio Preview Indicator -->
+  <aside id="audio-bar" class="audio-player-bar hidden">
     <div class="audio-meta">
       <div class="audio-waves">
         <span class="bar bar-1"></span>
@@ -152,8 +140,25 @@
     <button id="audio-stop-btn" class="audio-close-btn" aria-label="Stop audio preview">✕</button>
   </aside>
 
-  <!-- Core Scripts -->
+  <!-- Core Data & Application Logic -->
   <script src="data.js"></script>
   <script src="app.js"></script>
+
+  <!-- Fail-Safe Immediate Splash Dismiss -->
+  <script>
+    setTimeout(function() {
+      var splash = document.getElementById('splash-screen');
+      if (splash) {
+        splash.style.transition = 'opacity 0.5s ease';
+        splash.style.opacity = '0';
+        splash.style.pointerEvents = 'none';
+        setTimeout(function() {
+          splash.remove();
+        }, 500);
+      }
+    }, 2200);
+  </script>
 </body>
 </html>
+
+
