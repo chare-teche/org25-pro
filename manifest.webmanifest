@@ -1,12 +1,13 @@
 {
-  "name": "ORG 25 PRO",
-  "short_name": "ORG 25",
-  "description": "Ethiopia's #1 Keyboard Style & Rhythm Store for ORG 25",
-  "start_url": "./index.html",
+  "name": "ORG 25 PRO - Ethiopian Keyboard Styles",
+  "short_name": "ORG 25 PRO",
+  "description": "Progressive information platform and store companion hub for ORG 25.",
+  "start_url": "./index.html#home",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0a1020",
+  "background_color": "#070b14",
   "theme_color": "#0a1020",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "assets/icon-192.png",
