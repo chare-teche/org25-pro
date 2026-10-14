@@ -1,5 +1,6 @@
-const CACHE_VERSION = "org25-pro-v1.0.0";
-const ASSETS_TO_CACHE = [
+// Reliable Custom Service Worker with Asset Rotation & Fallbacks
+const BUST = "v103_org25pro";
+const SHELL = [
   "./",
   "./index.html",
   "./styles.css",
@@ -12,46 +13,46 @@ const ASSETS_TO_CACHE = [
   "./assets/icon-maskable-512.png"
 ];
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
+self.addEventListener("install", (e) => {
+  e.waitUntil(
+    caches.open(BUST).then((c) => {
+      return c.addAll(SHELL);
     }).then(() => self.skipWaiting())
   );
 });
 
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_VERSION) {
-            return caches.delete(key);
-          }
+        keys.map((k) => {
+          if (k !== BUST) return caches.delete(k);
         })
       );
     }).then(() => self.clients.claim())
   );
 });
 
-self.addEventListener("fetch", (event) => {
-  if (!event.request.url.startsWith("http")) return;
+self.addEventListener("fetch", (e) => {
+  if (e.request.method !== "GET") return;
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request)
-        .then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200 && networkResponse.type === "basic") {
-            const responseToCache = networkResponse.clone();
-            caches.open(CACHE_VERSION).then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
-          }
-          return networkResponse;
-        })
-        .catch(() => {});
+  e.respondWith(
+    caches.match(e.request).then((hit) => {
+      if (hit) return hit;
 
-      return cachedResponse || fetchPromise;
+      return fetch(e.request).then((res) => {
+        if (!res || res.status !== 200) return res;
+
+        const clone = res.clone();
+        caches.open(BUST).then((c) => {
+          c.put(e.request, clone);
+        });
+        return res;
+      }).catch(() => {
+        if (e.request.headers.get("accept").includes("text/html")) {
+          return caches.match("./index.html");
+        }
+      });
     })
   );
 });
