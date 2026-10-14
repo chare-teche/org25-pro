@@ -1,164 +1,349 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>ORG 25 PRO | Ethiopian Keyboard Styles & Rhythms</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ORG 25 PRO - Ethiopia's #1 Keyboard Style & Rhythm Store</title>
   
-  <meta name="description" content="Premium Ethiopian Sets, Rhythms, and Styles for ORG 24 & ORG 25 keyboard workstations. Curated by Chare Chanako.">
-  <meta name="theme-color" content="#0a1020">
+  <!-- SEO & Optimization Meta -->
+  <meta name="description" content="Premium Ethiopian keyboard styles, rhythms, sound packs, voices, and multipads for ORG 25. Browse, learn, and download with instant automated delivery.">
+  <meta name="theme-color" content="#0a1020" id="theme-meta">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="ORG 25 PRO">
-  
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+  <link rel="icon" type="image/png" href="assets/icon-192.png">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
 
+  <!-- Open Graph -->
+  <meta property="og:title" content="ORG 25 PRO">
+  <meta property="og:description" content="Get premium Ethiopian keyboard styles & Yamaha PSR-SX900 packs for ORG 25.">
+  <meta property="og:image" content="assets/logo.png">
+  <meta property="og:type" content="website">
+
+  <!-- Font and Styles Preload -->
   <link rel="stylesheet" href="styles.css">
+  
+  <!-- Structured Data JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ORG 25 PRO",
+    "operatingSystem": "iOS, Android, Windows",
+    "applicationCategory": "MusicApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "ETB"
+    },
+    "founder": {
+      "@type": "Person",
+      "name": "Chare Chanako"
+    }
+  }
+  </script>
 </head>
 <body>
+  <!-- Brand Identity Stripe -->
+  <div class="ethio-stripe" aria-hidden="true"></div>
 
-  <!-- Native Animated Startup Splash Screen -->
-  <aside id="splash-screen" class="splash-container" aria-label="Loading ORG 25 PRO">
-    <div class="splash-content">
-      <div class="splash-glow"></div>
-      <img src="assets/logo.png" alt="ORG 25 PRO Logo" class="splash-anim-logo">
-      <h1 class="splash-brand">ORG 25 <span class="splash-gold">PRO</span></h1>
-      <div class="splash-loader-bar">
-        <div class="splash-loader-progress"></div>
-      </div>
-      <span class="splash-tag">ETHIOPIAN RHYTHMS & SETS</span>
-    </div>
-  </aside>
-
-  <!-- Sticky Glassmorphic Header -->
-  <header class="app-header">
-    <div class="brand-group">
-      <img src="assets/logo.png" alt="Emblem" class="brand-avatar">
-      <div class="brand-meta">
-        <h2 class="brand-title">ORG 25 <span class="splash-gold">PRO</span></h2>
-        <span class="brand-founder" data-i18n="founder">By Chare Chanako</span>
-      </div>
-    </div>
-
-    <div class="header-actions">
-      <button id="lang-toggle" class="btn-pill" aria-label="Switch Language">አማ</button>
-      <a href="https://t.me/charisha_bot" target="_blank" rel="noopener noreferrer" class="btn-pill telegram-pill" aria-label="Open Telegram Bot">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
-        </svg>
-        <span>Bot</span>
-      </a>
-    </div>
-  </header>
-
-  <!-- Search & Filter Bar -->
-  <section class="search-section" aria-label="Search Styles">
-    <div class="search-input-wrap">
-      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-      </svg>
-      <input type="search" id="style-search" placeholder="Search styles, sets, or rhythms..." aria-label="Search rhythms">
-    </div>
-  </section>
-
-  <!-- Horizontal Scrolling Category Chips -->
-  <nav class="category-tabs" aria-label="Filter by Rhythm Category">
-    <button class="cat-btn active" data-cat="all" data-i18n="tab_all">All Styles</button>
-    <button class="cat-btn" data-cat="set" data-i18n="tab_set">Full Sets</button>
-    <button class="cat-btn" data-cat="choche" data-i18n="tab_choche">Choche</button>
-    <button class="cat-btn" data-cat="gurage" data-i18n="tab_gurage">Gurage</button>
-    <button class="cat-btn" data-cat="oromo" data-i18n="tab_oromo">Oromo</button>
-    <button class="cat-btn" data-cat="tigray" data-i18n="tab_tigray">Tigray</button>
-    <button class="cat-btn" data-cat="guide" data-i18n="tab_guide">Payment & Guide</button>
-  </nav>
-
-  <!-- Main Catalog Container -->
-  <main class="main-content">
-    <section id="catalog-grid" class="product-grid" aria-live="polite"></section>
-
-    <!-- Payment & Guide Section -->
-    <section id="guide-section" class="guide-container hidden" aria-labelledby="guide-heading">
-      <div class="guide-header-block">
-        <h3 id="guide-heading" class="guide-title" data-i18n="guide_heading">Payment Accounts & Verification</h3>
-        <p class="guide-sub" data-i18n="guide_sub">Transfer using your preferred payment method below, copy the transaction reference, and send it to our Telegram bot for instant style delivery.</p>
-      </div>
-
-      <div class="payment-cards">
-        <article class="pay-card">
-          <div class="pay-info">
-            <span class="pay-label">Commercial Bank of Ethiopia (CBE)</span>
-            <strong class="pay-number" id="cbe-num">1000718384552</strong>
-            <span class="pay-holder">Chare Chanako</span>
-          </div>
-          <button class="copy-btn" onclick="copyToClipboard('cbe-num', this)">Copy</button>
-        </article>
-
-        <article class="pay-card">
-          <div class="pay-info">
-            <span class="pay-label">Telebirr</span>
-            <strong class="pay-number" id="telebirr-num">0981764920</strong>
-            <span class="pay-holder">Chare Chanako</span>
-          </div>
-          <button class="copy-btn" onclick="copyToClipboard('telebirr-num', this)">Copy</button>
-        </article>
-
-        <article class="pay-card">
-          <div class="pay-info">
-            <span class="pay-label">Safaricom M-Pesa</span>
-            <strong class="pay-number" id="mpesa-num">0716690573</strong>
-            <span class="pay-holder">Chare Chanako</span>
-          </div>
-          <button class="copy-btn" onclick="copyToClipboard('mpesa-num', this)">Copy</button>
-        </article>
-      </div>
-
-      <div class="guide-cta-card">
-        <div class="cta-text">
-          <strong data-i18n="cta_title">Completed Payment?</strong>
-          <span data-i18n="cta_desc">Tap below to submit your receipt directly to our delivery bot.</span>
+  <!-- Main Mobile-First Shell -->
+  <div id="app-shell">
+    
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="header-brand">
+        <img src="assets/logo.png" alt="ORG 25 PRO" class="brand-logo" onerror="this.style.display='none'">
+        <div class="brand-text">
+          <h1 data-i18n="brand">ORG 25 PRO</h1>
+          <span data-i18n="tagline_sub">Ethiopian Sound Hub</span>
         </div>
-        <a href="https://t.me/charisha_bot" target="_blank" rel="noopener noreferrer" class="btn-buy cta-btn">
-          Verify via Bot ⚡
+      </div>
+      <div class="header-actions">
+        <button id="lang-toggle" class="btn-icon ripple" aria-label="Toggle Language" data-sound="tap">አማ</button>
+        <button id="theme-toggle" class="btn-icon ripple" aria-label="Toggle Theme" data-sound="tap">☀️</button>
+      </div>
+    </header>
+
+    <!-- ANNOUNCEMENT BANNER -->
+    <div id="announcement" class="banner hidden" role="alert">
+      <div class="banner-content">
+        <span class="banner-badge" data-i18n="banner_badge">UPDATED</span>
+        <span id="banner-text">...</span>
+      </div>
+    </div>
+
+    <!-- MAIN VIEWS PANEL -->
+    <main id="main-view" class="scroller">
+      
+      <!-- 1. HOME SCREEN -->
+      <section id="view-home" class="view active">
+        <div class="hero-card glass-card fade-in">
+          <span class="hero-label" data-i18n="featured">EXCLUSIVE</span>
+          <h2 data-i18n="tagline">Ethiopia's #1 Keyboard Style & Rhythm Store</h2>
+          <p class="hero-desc" data-i18n="about">Get custom styles, Yamaha sets, voices & multipads for ORG 25. Optimized for high-fidelity performance.</p>
+          <a id="hero-cta" href="#" target="_blank" rel="noopener" class="btn btn-gold ripple full-width">
+            <span>⚡</span> <span data-i18n="openBot">Open the Bot</span>
+          </a>
+        </div>
+
+        <div class="view-header">
+          <h3 data-i18n="featured_title">Featured Style Pack</h3>
+        </div>
+        <div id="featured-outlet"></div>
+
+        <div class="view-header">
+          <h3 data-i18n="quick_access">Quick Access</h3>
+        </div>
+        <div class="quick-access-grid">
+          <a href="#styles" class="tile glass-card ripple" data-sound="click">
+            <span class="tile-icon">🎹</span>
+            <span class="tile-title" data-i18n="navStyles">Styles</span>
+          </a>
+          <a href="#free" class="tile glass-card ripple" data-sound="click">
+            <span class="tile-icon">🎁</span>
+            <span class="tile-title" data-i18n="navFree">Free</span>
+          </a>
+          <a href="#learn" class="tile glass-card ripple" data-sound="click">
+            <span class="tile-icon">📖</span>
+            <span class="tile-title" data-i18n="navLearn">Learn</span>
+          </a>
+          <a href="#contact" class="tile glass-card ripple" data-sound="click">
+            <span class="tile-icon">💬</span>
+            <span class="tile-title" data-i18n="navContact">Contact</span>
+          </a>
+        </div>
+
+        <div class="glass-card flex-col community-panel gap-12">
+          <h4 data-i18n="community">Join the Official Community</h4>
+          <div class="btn-group">
+            <a id="home-channel" href="#" target="_blank" rel="noopener" class="btn btn-outline full-width" data-i18n="joinChannel">Join Channel</a>
+            <a id="home-group" href="#" target="_blank" rel="noopener" class="btn btn-outline full-width" data-i18n="joinGroup">Join Group</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. STYLES SCREEN -->
+      <section id="view-styles" class="view">
+        <div class="search-bar-wrap">
+          <input type="search" id="style-search" class="input-glow" placeholder="Search styles, rhythms (Chik-chika, Wollo...)" data-i18n-attr="placeholder:search_placeholder">
+        </div>
+        <div id="styles-outlet" class="cards-stack"></div>
+      </section>
+
+      <!-- 3. LEARN SCREEN -->
+      <section id="view-learn" class="view">
+        <div class="tab-scroller">
+          <nav class="segment-nav" role="tablist">
+            <button class="segment-btn active" data-subview="tutorials" role="tab" data-i18n="tutorials">Tutorials</button>
+            <button class="segment-btn" data-subview="faq" role="tab" data-i18n="faq">FAQ</button>
+            <button class="segment-btn" data-subview="guide" role="tab" data-i18n="guide">Guide</button>
+          </nav>
+        </div>
+
+        <div id="learn-tutorials" class="subview active">
+          <div id="tutorials-outlet"></div>
+        </div>
+
+        <div id="learn-faq" class="subview">
+          <div id="faqs-outlet" class="accordion"></div>
+        </div>
+
+        <div id="learn-guide" class="subview">
+          <div class="glass-card guide-card">
+            <h4 data-i18n="howToBuyTitle">How to Buy Styles</h4>
+            <ol id="guide-buy-steps" class="ordered-list"></ol>
+          </div>
+
+          <div class="glass-card guide-card">
+            <h4 data-i18n="howToUseTitle">How to Use Your Files</h4>
+            <ol id="guide-use-steps" class="ordered-list"></ol>
+          </div>
+
+          <div class="glass-card">
+            <h4 data-i18n="paymentAccounts">Payment Accounts</h4>
+            <div id="payment-warning" class="warning-alert"></div>
+            <div id="accounts-outlet" class="flex-col gap-10"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. FREE SCREEN -->
+      <section id="view-free" class="view">
+        <div class="glass-card free-hero text-center">
+          <span class="free-badge">🎁</span>
+          <h3 data-i18n="free_hub">Free Styles & Accessories</h3>
+          <p class="text-mute" data-i18n="freeBotNote">Free items are sent directly via our Telegram Bot.</p>
+        </div>
+
+        <div class="view-header">
+          <h4 data-i18n="freeSamples">Free Sample Packs</h4>
+        </div>
+        <div id="samples-outlet" class="cards-stack"></div>
+
+        <div class="view-header">
+          <h4 data-i18n="freeApps">Free Utilities & Tools</h4>
+        </div>
+        <div id="tools-outlet" class="cards-stack"></div>
+      </section>
+
+      <!-- 5. CONTACT SCREEN -->
+      <section id="view-contact" class="view">
+        <div class="glass-card flex-col gap-14">
+          <h3 data-i18n="contactSupport">Direct Customer Support</h3>
+          <div class="grid-2x2">
+            <a id="contact-tg" href="#" target="_blank" rel="noopener" class="icon-tile btn-outline">
+              <span class="tile-ico">✈️</span> <span data-i18n="telegramSupport">Telegram</span>
+            </a>
+            <a id="contact-ph" href="#" class="icon-tile btn-outline">
+              <span class="tile-ico">📞</span> <span data-i18n="phoneCall">Phone</span>
+            </a>
+            <a id="contact-wa" href="#" target="_blank" rel="noopener" class="icon-tile btn-outline">
+              <span class="tile-ico">💬</span> <span>WhatsApp</span>
+            </a>
+            <a id="contact-em" href="#" class="icon-tile btn-outline">
+              <span class="tile-ico">✉️</span> <span>Email</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="glass-card border-gold">
+          <h4 class="gold-text" data-i18n="referralTitle">Referral program</h4>
+          <p id="referral-desc" class="text-small">...</p>
+        </div>
+
+        <div class="glass-card founder-badge">
+          <div class="founder-pic">👤</div>
+          <div>
+            <h4 id="founder-name">...</h4>
+            <span id="founder-loc" class="label-badge">...</span>
+            <p id="founder-bio" class="text-small text-mute mt-4">...</p>
+          </div>
+        </div>
+
+        <div class="install-panel glass-card">
+          <button id="btn-share" class="btn btn-outline full-width">
+            <span>🔗</span> <span data-i18n="shareApp">Share App</span>
+          </button>
+          <button id="btn-pwa-install" class="btn btn-gold full-width hidden">
+            <span>📥</span> <span data-i18n="installApp">Install Application</span>
+          </button>
+          <p id="ios-hint" class="hint-label hidden" data-i18n="iosInstall">
+            To install on iOS: tap Share icon & Scroll to 'Add to Home Screen'.
+          </p>
+        </div>
+      </section>
+
+      <!-- 6. OWNER ADMIN EDITOR (#editor) -->
+      <section id="view-editor" class="view">
+        <div class="glass-card border-gold">
+          <h3>Store Administrator Studio</h3>
+          <p class="text-small text-mute">Updates are generated locally. Copy and upload output to your repository to push changes.</p>
+          <div class="btn-group mt-10">
+            <button id="btn-copy-config" class="btn btn-gold btn-sm">Copy data.js</button>
+            <button id="btn-download-config" class="btn btn-outline btn-sm">Download data.js</button>
+          </div>
+        </div>
+
+        <div class="editor-section glass-card">
+          <h4>Live Announcement Notice</h4>
+          <div class="input-pair">
+            <label>EN Notice</label>
+            <input type="text" id="ed-notice-en" class="input-glow">
+          </div>
+          <div class="input-pair">
+            <label>AM Notice (የአማርኛ ማስታወቂያ)</label>
+            <input type="text" id="ed-notice-am" class="input-glow">
+          </div>
+        </div>
+
+        <div class="editor-section glass-card">
+          <div class="flex-row flex-between">
+            <h4>Sound Packs & Styles</h4>
+            <button id="btn-add-style" class="btn btn-gold btn-sm">+ Add New</button>
+          </div>
+          <div id="ed-styles-outlet" class="admin-edit-stack"></div>
+        </div>
+
+        <div class="editor-section glass-card">
+          <div class="flex-row flex-between">
+            <h4>Tutorials</h4>
+            <button id="btn-add-tut" class="btn btn-gold btn-sm">+ Add New</button>
+          </div>
+          <div id="ed-tutorials-outlet" class="admin-edit-stack"></div>
+        </div>
+
+        <div class="editor-section glass-card">
+          <div class="flex-row flex-between">
+            <h4>Frequently Asked Questions</h4>
+            <button id="btn-add-faq" class="btn btn-gold btn-sm">+ Add New</button>
+          </div>
+          <div id="ed-faqs-outlet" class="admin-edit-stack"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FLOATING GLASS BOTTOM NAVIGATION -->
+    <nav class="bottom-nav" aria-label="Tab Navigation">
+      <a href="#home" class="nav-tab active" data-tab="home" data-sound="nav">
+        <span class="tab-icon">🏠</span>
+        <span class="tab-label" data-i18n="navHome">Home</span>
+      </a>
+      <a href="#styles" class="nav-tab" data-tab="styles" data-sound="nav">
+        <span class="tab-icon">🎹</span>
+        <span class="tab-label" data-i18n="navStyles">Styles</span>
+      </a>
+      <a href="#learn" class="nav-tab" data-tab="learn" data-sound="nav">
+        <span class="tab-icon">📖</span>
+        <span class="tab-label" data-i18n="navLearn">Learn</span>
+      </a>
+      <a href="#free" class="nav-tab" data-tab="free" data-sound="nav">
+        <span class="tab-icon">🎁</span>
+        <span class="tab-label" data-i18n="navFree">Free</span>
+      </a>
+      <a href="#contact" class="nav-tab" data-tab="contact" data-sound="nav">
+        <span class="tab-icon">💬</span>
+        <span class="tab-label" data-i18n="navContact">Contact</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- INTERACTIVE SPECIFICATION BOTTOM SHEET -->
+  <div id="bottom-sheet" class="sheet-scrim hidden" role="dialog" aria-modal="true">
+    <div class="sheet-canvas">
+      <div class="drag-handle"></div>
+      <div class="sheet-header">
+        <h3 id="sheet-p-title">Product Name</h3>
+        <button id="btn-close-sheet" class="btn-icon ripple" aria-label="Close modal">✕</button>
+      </div>
+      <div class="sheet-scroller">
+        <div class="spec-pills">
+          <span id="sheet-p-price" class="badge-accent">...</span>
+          <span id="sheet-p-size" class="badge-outline">...</span>
+          <span id="sheet-p-compat" class="badge-outline">...</span>
+        </div>
+        <p id="sheet-p-desc" class="sheet-description">...</p>
+        
+        <div class="sheet-block">
+          <h5 data-i18n="whatIsInside">What's Inside?</h5>
+          <p id="sheet-p-inside" class="block-content">...</p>
+        </div>
+
+        <a id="sheet-p-btn" href="#" target="_blank" rel="noopener" class="btn btn-gold ripple full-width m-top-bottom">
+          Buy in the Bot
         </a>
       </div>
-    </section>
-  </main>
-
-  <!-- Floating Audio Preview Indicator -->
-  <aside id="audio-bar" class="audio-player-bar hidden">
-    <div class="audio-meta">
-      <div class="audio-waves">
-        <span class="bar bar-1"></span>
-        <span class="bar bar-2"></span>
-        <span class="bar bar-3"></span>
-      </div>
-      <span id="playing-track-name" class="audio-track-title">Playing Rhythm Preview...</span>
     </div>
-    <button id="audio-stop-btn" class="audio-close-btn" aria-label="Stop audio preview">✕</button>
-  </aside>
+  </div>
 
-  <!-- Core Data & Application Logic -->
+  <!-- GLOBAL DYNAMIC TOAST -->
+  <div id="toast-outlet" class="toast hidden" role="status"></div>
+
+  <!-- Micro Interaction Engine -->
+  <audio id="sound-nav" src="data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQYAAAAAgH+Afg==" preload="auto"></audio>
+  <audio id="sound-tap" src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAAgICA" preload="auto"></audio>
+
   <script src="data.js"></script>
   <script src="app.js"></script>
-
-  <!-- Fail-Safe Immediate Splash Dismiss -->
-  <script>
-    setTimeout(function() {
-      var splash = document.getElementById('splash-screen');
-      if (splash) {
-        splash.style.transition = 'opacity 0.5s ease';
-        splash.style.opacity = '0';
-        splash.style.pointerEvents = 'none';
-        setTimeout(function() {
-          splash.remove();
-        }, 500);
-      }
-    }, 2200);
-  </script>
 </body>
 </html>
-
-
