@@ -1,723 +1,671 @@
-// Global State
-let currentLang = localStorage.getItem("org25_lang") || "en";
-let currentTheme = localStorage.getItem("org25_theme") || "dark";
-let deferredInstallPrompt = null;
-let activeData = window.APP_DATA;
-
-// UI Translations
-const UI_I18N = {
-  en: {
-    nav_home: "Home",
-    nav_styles: "Styles",
-    nav_learn: "Learn",
-    nav_free: "Free",
-    nav_contact: "Contact",
-    open_bot: "Open the Bot",
-    buy_in_bot: "Buy in the bot",
-    ask_in_bot: "Ask in the bot",
-    featured_badge: "FEATURED PACK",
-    size: "Size",
-    tested_on: "Tested on",
-    what_inside: "What's Included",
-    description: "Description",
-    search_placeholder: "Search styles, rhythms, instruments...",
-    tut_empty: "Videos coming soon",
-    faq_empty: "No FAQs available.",
-    copy: "Copy",
-    copied: "Copied!",
-    share: "Share App",
-    install: "Install App",
-    ios_hint: "To install on iOS: Tap Share (⎋) then 'Add to Home Screen' (+).",
-    warning_title: "Payment Warning",
-    delivery_title: "Instant Delivery",
-    support_btn: "Chat with Support",
-    channel_btn: "Join Channel",
-    group_btn: "Join Group",
-    about_founder: "About the founder",
-    referral_title: "Earn with Referral",
-    editor_title: "Owner Data Editor",
-    editor_note: "Notice: Changes made here only generate a new data.js file for your GitHub repository. It does not alter your live site directly."
-  },
-  am: {
-    nav_home: "መነሻ",
-    nav_styles: "ስታይሎች",
-    nav_learn: "መመሪያ",
-    nav_free: "ነፃ",
-    nav_contact: "አግኙን",
-    open_bot: "ቦቱን ክፈት",
-    buy_in_bot: "በቦቱ ግዛ",
-    ask_in_bot: "ዋጋውን በቦቱ ጠይቁ",
-    featured_badge: "ተወዳጅ ስብስብ",
-    size: "መጠን",
-    tested_on: "የተሞከረበት",
-    what_inside: "የተካተቱ ዝርዝሮች",
-    description: "ዝርዝር መግለጫ",
-    search_placeholder: "ስታይሎችን፣ ሪትሞችን ወይም ድምጾችን ፈልግ...",
-    tut_empty: "ቪዲዮዎች በቅርቡ ይጫናሉ",
-    faq_empty: "ምንም ተደጋጋሚ ጥያቄዎች አልተገኙም።",
-    copy: "ቅዳ",
-    copied: "ተቀድቷል!",
-    share: "መተግበሪያውን አጋራ",
-    install: "መተግበሪያውን ጫን",
-    ios_hint: "በ iOS ለመጫን፡ የ Share ምልክትን ነክተው 'Add to Home Screen' የሚለውን ይምረጡ።",
-    warning_title: "የክፍያ ማሳሰቢያ",
-    delivery_title: "ፈጣን አቅርቦት",
-    support_btn: "የደንበኞች ድጋፍ",
-    channel_btn: "ቻናሉን ተቀላቀሉ",
-    group_btn: "ግሩፑን ተቀላቀሉ",
-    about_founder: "ስለ መስራቹ",
-    referral_title: "በሪፈራል ገንዘብ ያግኙ",
-    editor_title: "የዳታ ማስተካከያ እና ማውረጃ",
-    editor_note: "ማሳሰቢያ፡ እዚህ የሚደረጉ ለውጦች አዲስ data.js ፋይል ያዘጋጃሉ። በቀጥታ በድህረ-ገጹ ላይ እንዲታዩ ፋይሉን አውርደው GitHub ላይ ይጫኑት።"
-  }
-};
-
-// Lifecycle
-document.addEventListener("DOMContentLoaded", async () => {
-  applyTheme(currentTheme);
-  updateLangButton();
-
-  if (typeof LIVE_API_URL === "string" && LIVE_API_URL.trim() !== "") {
-    try {
-      const res = await fetch(LIVE_API_URL);
-      if (res.ok) {
-        const liveJson = await res.json();
-        if (liveJson && typeof liveJson === "object") {
-          activeData = Object.assign({}, activeData, liveJson);
-        }
+// Progressive SPA & Real-time State Controller
+class AppEngine {
+  constructor() {
+    this.currentLang = localStorage.getItem("org25_lang") || "en";
+    this.currentTheme = localStorage.getItem("org25_theme") || "dark";
+    this.state = STORE_DATA;
+    this.installPrompt = null;
+    
+    this.i18n = {
+      en: {
+        brand: "ORG 25 PRO",
+        tagline_sub: "Ethiopian Sound Hub",
+        tagline: "Ethiopia's #1 Keyboard Style & Rhythm Store",
+        about: "Ethiopian keyboard styles, sound packs, and rhythms for ORG 25. High-quality samples optimized for live performance.",
+        openBot: "Open the Bot",
+        featured: "FEATURED PACK",
+        featured_title: "Featured Pack",
+        quick_access: "Quick Access",
+        community: "Join the Official Community",
+        joinChannel: "Join Channel",
+        joinGroup: "Join Group",
+        tutorials: "Tutorials",
+        faq: "FAQ",
+        guide: "Guide",
+        howToBuyTitle: "How to Buy",
+        howToUseTitle: "How to Use Files",
+        paymentAccounts: "Payment Accounts (Chare)",
+        free_hub: "Free Styles & Tools",
+        freeBotNote: "Free items are sent inside the bot.",
+        freeSamples: "Free Sample Styles",
+        freeApps: "Free Apps & Utilities",
+        contactSupport: "Direct Support",
+        telegramSupport: "Telegram Support",
+        phoneCall: "Phone Support",
+        referralTitle: "Referral Program (10% Bonus)",
+        shareApp: "Share App",
+        installApp: "Install App",
+        iosInstall: "To install on iOS: tap share icon and select 'Add to Home Screen'",
+        copy: "Copy",
+        copied: "Copied!",
+        emptyList: "No matching items found.",
+        banner_badge: "NOTICE",
+        navHome: "Home",
+        navStyles: "Styles",
+        navLearn: "Learn",
+        navFree: "Free",
+        navContact: "Contact",
+        buy_in_bot: "Buy in the Bot",
+        ask_in_bot: "Ask in the Bot"
+      },
+      am: {
+        brand: "ORG 25 PRO",
+        tagline_sub: "የኢትዮጵያ ድምፅ ማዕከል",
+        tagline: "የኢትዮጵያ ቁጥር #1 የኪቦርድ ስታይል እና ሪትም መደብር",
+        about: "ለ ORG 25 ስልክ መተግበሪያ የሚሆኑ የኢትዮጵያ ኪቦርድ ስታይሎች፣ የያማሃ ስታይሎች፣ የድምፅ ፓኮች፣ ቮይሶች እና መልቲፓዶች።",
+        openBot: "ቦቱን ክፈት",
+        featured: "ተመራጭ ምርት",
+        featured_title: "ተመራጭ ስታይል",
+        quick_access: "አቋራጮች",
+        community: "ይፋዊ ማህበረሰባችንን ይቀላቀሉ",
+        joinChannel: "ቻናሉን ይቀላቀሉ",
+        joinGroup: "ግሩፑን ይቀላቀሉ",
+        tutorials: "ቪዲዮዎች",
+        faq: "ጥያቄዎች",
+        guide: "መመሪያ",
+        howToBuyTitle: "እንዴት መግዛት ይቻላል",
+        howToUseTitle: "ፋይሎችን አጠቃቀም",
+        paymentAccounts: "የክፍያ አካውንቶች (Chare)",
+        free_hub: "ነፃ ስታይሎች እና መተግበሪያዎች",
+        freeBotNote: "ነፃ እቃዎች የሚላኩት በቴሌግራም ቦት ውስጥ ነው።",
+        freeSamples: "ነፃ የናሙና ስታይሎች",
+        freeApps: "ነፃ መተግበሪያዎች",
+        contactSupport: "ቀጥታ ግንኙነት እና ድጋፍ",
+        telegramSupport: "ቴሌግራም",
+        phoneCall: "በስልክ ይደውሉ",
+        referralTitle: "የሪፈራል ፕሮግራም (10% ጉርሻ)",
+        shareApp: "አጋራ",
+        installApp: "መተግበሪያውን ጫን",
+        iosInstall: "በ iOS ላይ ለመጫን: የሼር ምልክቱን ተጭነው 'Add to Home Screen' ይምረጡ",
+        copy: "ኮፒ",
+        copied: "ተቀድቷል!",
+        emptyList: "ምንም የተገኘ ነገር የለም።",
+        banner_badge: "ማስታወቂያ",
+        navHome: "መነሻ",
+        navStyles: "ስታይሎች",
+        navLearn: "ትምህርት",
+        navFree: "ነፃ",
+        navContact: "አግኙን",
+        buy_in_bot: "በቦቱ ይግዙ",
+        ask_in_bot: "በቦቱ ይጠይቁ"
       }
-    } catch (_) {
-      // Fallback cleanly to local data
+    };
+  }
+
+  async init() {
+    this.applyTheme(this.currentTheme);
+    await this.trySyncLive();
+    this.router();
+    this.bindEvents();
+    this.render();
+    this.registerPWA();
+    this.playInteractionSound("sound-tap");
+  }
+
+  async trySyncLive() {
+    if (typeof LIVE_API_URL === "string" && LIVE_API_URL.trim() !== "") {
+      try {
+        const check = await fetch(LIVE_API_URL, { signal: AbortSignal.timeout(4000) });
+        if (check.ok) {
+          const remote = await check.json();
+          if (remote && typeof remote === "object") {
+            this.state = { ...this.state, ...remote };
+          }
+        }
+      } catch (err) {
+        // Transparent fallback to static data.js configuration
+      }
     }
   }
 
-  setupEventListeners();
-  renderAnnouncement();
-  handleRouting();
-});
+  router() {
+    const processHash = () => {
+      const hash = window.location.hash.toLowerCase() || "#home";
+      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+      document.querySelectorAll(".nav-tab").forEach(tab => tab.classList.remove("active"));
+      
+      const route = hash.replace("#", "view-");
+      const activeEl = document.getElementById(route);
+      if (activeEl) {
+        activeEl.classList.add("active");
+        activeEl.classList.add("fade-in");
+      } else {
+        document.getElementById("view-home").classList.add("active");
+      }
 
-function setupEventListeners() {
-  window.addEventListener("hashchange", handleRouting);
+      const activeTab = document.querySelector(`.nav-tab[href="${hash}"]`);
+      if (activeTab) activeTab.classList.add("active");
+    };
 
-  document.getElementById("theme-toggle-btn").addEventListener("click", () => {
-    currentTheme = currentTheme === "dark" ? "light" : "dark";
-    localStorage.setItem("org25_theme", currentTheme);
-    applyTheme(currentTheme);
-  });
-
-  document.getElementById("lang-toggle-btn").addEventListener("click", () => {
-    currentLang = currentLang === "en" ? "am" : "en";
-    localStorage.setItem("org25_lang", currentLang);
-    updateLangButton();
-    updateNavTranslations();
-    renderAnnouncement();
-    handleRouting();
-  });
-
-  const sheetBackdrop = document.getElementById("detail-sheet-backdrop");
-  document.getElementById("sheet-close-btn").addEventListener("click", closeSheet);
-  sheetBackdrop.addEventListener("click", (e) => {
-    if (e.target === sheetBackdrop) closeSheet();
-  });
-
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredInstallPrompt = e;
-    const btn = document.getElementById("pwa-install-btn");
-    if (btn) btn.style.display = "inline-flex";
-  });
-}
-
-function applyTheme(theme) {
-  document.documentElement.setAttribute("data-theme", theme);
-  const icon = document.getElementById("theme-icon");
-  if (icon) icon.textContent = theme === "dark" ? "☀️" : "🌙";
-}
-
-function updateLangButton() {
-  const lbl = document.getElementById("lang-label");
-  if (lbl) lbl.textContent = currentLang === "en" ? "አማ" : "EN";
-}
-
-function updateNavTranslations() {
-  document.querySelectorAll("[data-i18n]").forEach((el) => {
-    const key = el.getAttribute("data-i18n");
-    if (UI_I18N[currentLang][key]) {
-      el.textContent = UI_I18N[currentLang][key];
-    }
-  });
-}
-
-function renderAnnouncement() {
-  const banner = document.getElementById("announcement-banner");
-  const textEl = document.getElementById("announcement-text");
-  const txt = activeData.announcement?.[currentLang] || activeData.announcement?.en;
-  if (txt && txt.trim() !== "") {
-    textEl.textContent = txt;
-    banner.style.display = "flex";
-  } else {
-    banner.style.display = "none";
-  }
-}
-
-// Router
-function handleRouting() {
-  const hash = window.location.hash || "#home";
-  const main = document.getElementById("app-content");
-
-  document.querySelectorAll(".bottom-nav .nav-item").forEach((el) => {
-    if (el.getAttribute("href") === hash) {
-      el.classList.add("active");
-    } else {
-      el.classList.remove("active");
-    }
-  });
-
-  window.scrollTo(0, 0);
-
-  if (hash === "#styles") renderStylesScreen(main);
-  else if (hash === "#learn") renderLearnScreen(main);
-  else if (hash === "#free") renderFreeScreen(main);
-  else if (hash === "#contact") renderContactScreen(main);
-  else if (hash === "#editor") renderEditorScreen(main);
-  else renderHomeScreen(main);
-}
-
-// 1. HOME SCREEN
-function renderHomeScreen(container) {
-  const t = UI_I18N[currentLang];
-  const feat = activeData.products.find(p => p.featured) || activeData.products[0];
-  const tag = activeData.tagline?.[currentLang] || activeData.tagline?.en;
-
-  let featHtml = "";
-  if (feat) {
-    const featPrice = feat.price ? `${feat.price} ETB` : t.ask_in_bot;
-    const featBuyUrl = feat.botId ? `${activeData.links.bot}?start=buy_${feat.botId}` : activeData.links.bot;
-    const featDesc = feat.shortDesc?.[currentLang] || feat.shortDesc?.en;
-    featHtml = `
-      <section class="glass-card product-card" onclick="openProductSheet('${feat.id}')">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span class="gold-badge">${t.featured_badge}</span>
-          <span class="product-price">${featPrice}</span>
-        </div>
-        <h3 style="font-size:1.15rem; margin-top:4px;">${feat.name}</h3>
-        <p style="color:var(--text-muted); font-size:0.85rem;">${featDesc}</p>
-        <div class="product-meta">
-          <span class="product-size">${t.size}: ${feat.size}</span>
-          <span style="font-size:0.8rem; color:var(--gold-primary);">★ ${feat.rating || "5.0"} (${feat.reviewsCount || 0})</span>
-        </div>
-        <a href="${featBuyUrl}" class="btn-gold" style="margin-top:6px;" onclick="event.stopPropagation();" target="_blank" rel="noopener">
-          ${t.buy_in_bot}
-        </a>
-      </section>
-    `;
+    window.addEventListener("hashchange", () => {
+      processHash();
+      this.playInteractionSound("sound-nav");
+    });
+    processHash();
   }
 
-  container.innerHTML = `
-    <section class="glass-card hero-card">
-      <img src="assets/logo.png" alt="ORG 25 PRO Logo" class="hero-logo" onerror="this.style.display='none'">
-      <h1 style="font-size: 1.4rem;">ORG 25 <span style="color:var(--gold-primary)">PRO</span></h1>
-      <p class="hero-tagline">${tag}</p>
-      <a href="${activeData.links.bot}" class="btn-gold" target="_blank" rel="noopener">
-        ⚡ ${t.open_bot}
-      </a>
-      <div class="social-grid">
-        <a href="${activeData.links.channel}" class="btn-outline" target="_blank" rel="noopener">📢 ${t.channel_btn}</a>
-        <a href="${activeData.links.group}" class="btn-outline" target="_blank" rel="noopener">👥 ${t.group_btn}</a>
-      </div>
-    </section>
+  applyTheme(target) {
+    document.documentElement.setAttribute("data-theme", target);
+    document.getElementById("theme-toggle").textContent = target === "dark" ? "☀️" : "🌙";
+    document.getElementById("theme-meta").setAttribute("content", target === "dark" ? "#0a1020" : "#f0f3f8");
+    localStorage.setItem("org25_theme", target);
+  }
 
-    <div class="quick-tiles">
-      <a href="#styles" class="tile-btn"><span>🎹</span><span>${t.nav_styles}</span></a>
-      <a href="#learn" class="tile-btn"><span>📖</span><span>${t.nav_learn}</span></a>
-      <a href="#free" class="tile-btn"><span>🎁</span><span>${t.nav_free}</span></a>
-      <a href="#contact" class="tile-btn"><span>💬</span><span>${t.nav_contact}</span></a>
-    </div>
+  toggleLanguage() {
+    this.currentLang = this.currentLang === "en" ? "am" : "en";
+    localStorage.setItem("org25_lang", this.currentLang);
+    this.render();
+  }
 
-    ${featHtml}
-
-    <section class="glass-card">
-      <h3 style="font-size: 1rem; margin-bottom: 6px;">${currentLang === "en" ? "About ORG 25" : "ስለ ORG 25"}</h3>
-      <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
-        ${activeData.about?.[currentLang] || activeData.about?.en}
-      </p>
-    </section>
-  `;
-}
-
-// 2. STYLES SCREEN
-function renderStylesScreen(container) {
-  const t = UI_I18N[currentLang];
-  container.innerHTML = `
-    <input type="text" id="style-search" class="search-bar" placeholder="${t.search_placeholder}">
-    <div id="styles-container" class="product-list"></div>
-  `;
-
-  const searchInput = document.getElementById("style-search");
-  const listContainer = document.getElementById("styles-container");
-
-  const renderFiltered = (query = "") => {
-    const q = query.toLowerCase().trim();
-    const filtered = activeData.products.filter(p => {
-      const name = p.name.toLowerCase();
-      const desc = (p.shortDesc?.[currentLang] || p.shortDesc?.en || "").toLowerCase();
-      return name.includes(q) || desc.includes(q);
+  bindEvents() {
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+      this.currentTheme = this.currentTheme === "dark" ? "light" : "dark";
+      this.applyTheme(this.currentTheme);
     });
 
-    if (filtered.length === 0) {
-      listContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:30px;">No styles found matching "${query}".</p>`;
+    document.getElementById("lang-toggle").addEventListener("click", () => {
+      this.toggleLanguage();
+    });
+
+    document.getElementById("style-search").addEventListener("input", (e) => {
+      this.renderStyles(e.target.value);
+    });
+
+    document.querySelectorAll(".segment-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        document.querySelectorAll(".segment-btn").forEach(b => b.classList.remove("active"));
+        e.target.classList.add("active");
+        
+        document.querySelectorAll(".subview").forEach(sv => sv.classList.remove("active"));
+        const selected = document.getElementById(`learn-${e.target.dataset.subview}`);
+        if (selected) selected.classList.add("active");
+      });
+    });
+
+    document.getElementById("btn-close-sheet").addEventListener("click", () => {
+      document.getElementById("bottom-sheet").classList.add("hidden");
+    });
+
+    document.getElementById("btn-share").addEventListener("click", async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: this.state.brand,
+            text: this.state.tagline[this.currentLang] || this.state.tagline,
+            url: window.location.origin
+          });
+        } catch (_) {}
+      } else {
+        navigator.clipboard.writeText(window.location.origin);
+        this.fireToast(this.i18n[this.currentLang].copied);
+      }
+    });
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      this.installPrompt = e;
+      const installBtn = document.getElementById("btn-pwa-install");
+      installBtn.classList.remove("hidden");
+      installBtn.addEventListener("click", async () => {
+        if (this.installPrompt) {
+          this.installPrompt.prompt();
+          const { outcome } = await this.installPrompt.userChoice;
+          if (outcome === "accepted") {
+            installBtn.classList.add("hidden");
+          }
+          this.installPrompt = null;
+        }
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      const copyBtn = e.target.closest(".copy-target");
+      if (copyBtn) {
+        const val = copyBtn.getAttribute("data-copy");
+        navigator.clipboard.writeText(val).then(() => {
+          this.fireToast(this.i18n[this.currentLang].copied);
+        });
+      }
+    });
+
+    // Custom sound triggering UI bindings
+    document.querySelectorAll("[data-sound]").forEach(el => {
+      el.addEventListener("click", () => {
+        this.playInteractionSound(`sound-${el.dataset.sound}`);
+      });
+    });
+
+    this.bindAdmin();
+  }
+
+  playInteractionSound(id) {
+    const s = document.getElementById(id);
+    if (s) {
+      s.currentTime = 0;
+      s.play().catch(() => {});
+    }
+  }
+
+  fireToast(msg) {
+    const t = document.getElementById("toast-outlet");
+    t.textContent = msg;
+    t.classList.remove("hidden");
+    setTimeout(() => t.classList.add("hidden"), 3000);
+  }
+
+  render() {
+    const t = this.i18n[this.currentLang];
+    
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (t[key]) el.textContent = t[key];
+    });
+
+    document.querySelectorAll("[data-i18n-attr]").forEach(el => {
+      const [attr, key] = el.getAttribute("data-i18n-attr").split(":");
+      if (t[key]) el.setAttribute(attr, t[key]);
+    });
+
+    document.getElementById("lang-toggle").textContent = this.currentLang === "en" ? "አማ" : "EN";
+
+    // Setup Notice Banner
+    const noticeText = this.state.notice[this.currentLang] || this.state.notice.en || "";
+    if (noticeText.trim() !== "") {
+      document.getElementById("banner-text").textContent = noticeText;
+      document.getElementById("announcement").classList.remove("hidden");
+    } else {
+      document.getElementById("announcement").classList.add("hidden");
+    }
+
+    // Direct configuration hooks
+    document.getElementById("hero-cta").href = this.state.links.bot;
+    document.getElementById("home-channel").href = this.state.links.channel;
+    document.getElementById("home-group").href = this.state.links.group;
+    document.getElementById("contact-tg").href = this.state.links.support;
+    document.getElementById("contact-ph").href = `tel:${this.state.links.phoneInt}`;
+    document.getElementById("contact-wa").href = this.state.links.whatsapp;
+    document.getElementById("contact-em").href = `mailto:${this.state.links.email}`;
+
+    // Render features
+    this.renderFeatured();
+    this.renderStyles();
+    this.renderTutorials();
+    this.renderFAQ();
+    this.renderGuide();
+    this.renderFree();
+    this.renderOwnerAdmin();
+  }
+
+  renderFeatured() {
+    const ft = this.state.products.find(p => p.featured) || this.state.products[0];
+    const target = document.getElementById("featured-outlet");
+    target.innerHTML = "";
+    if (!ft) return;
+
+    const card = document.createElement("div");
+    card.className = "glass-card product-card";
+    const desc = ft.desc[this.currentLang] || ft.desc.en || "";
+    card.innerHTML = `
+      <div class="p-header">
+        <h4 class="p-title">${ft.name}</h4>
+        <span class="badge-accent">${ft.price ? ft.price + " ETB" : this.i18n[this.currentLang].ask_in_bot}</span>
+      </div>
+      <p class="text-small text-mute mt-4">${desc}</p>
+      <div class="p-footer">
+        <span class="p-meta">📦 ${ft.size} • ${ft.testedOn}</span>
+        <button class="btn btn-gold btn-sm">${this.i18n[this.currentLang].buy_in_bot}</button>
+      </div>
+    `;
+    card.addEventListener("click", () => this.showDetailSheet(ft));
+    target.appendChild(card);
+  }
+
+  renderStyles(filter = "") {
+    const list = document.getElementById("styles-outlet");
+    list.innerHTML = "";
+    const fVal = filter.toLowerCase();
+
+    const matches = this.state.products.filter(p => {
+      const d = (p.desc[this.currentLang] || p.desc.en || "").toLowerCase();
+      return p.name.toLowerCase().includes(fVal) || d.includes(fVal);
+    });
+
+    if (!matches.length) {
+      list.innerHTML = `<div class="glass-card text-center">${this.i18n[this.currentLang].emptyList}</div>`;
       return;
     }
 
-    listContainer.innerHTML = filtered.map(p => {
-      const priceText = p.price ? `${p.price} ETB` : t.ask_in_bot;
-      const buyUrl = p.botId ? `${activeData.links.bot}?start=buy_${p.botId}` : activeData.links.bot;
-      const desc = p.shortDesc?.[currentLang] || p.shortDesc?.en;
-      return `
-        <div class="glass-card product-card" onclick="openProductSheet('${p.id}')">
-          <div class="product-meta">
-            <h3 style="font-size: 1.05rem;">${p.name}</h3>
-            <span class="product-price">${priceText}</span>
-          </div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">${desc}</p>
-          <div class="product-meta">
-            <span class="product-size">${t.size}: ${p.size}</span>
-            <span style="font-size: 0.8rem; color: var(--gold-primary);">★ ${p.rating || "5.0"}</span>
-          </div>
-          <a href="${buyUrl}" class="btn-gold" style="margin-top:4px;" onclick="event.stopPropagation();" target="_blank" rel="noopener">
-            ${t.buy_in_bot}
-          </a>
+    matches.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "glass-card product-card";
+      card.innerHTML = `
+        <div class="p-header">
+          <h4 class="p-title">${p.name}</h4>
+          <span class="badge-accent">${p.price ? p.price + " ETB" : this.i18n[this.currentLang].ask_in_bot}</span>
+        </div>
+        <p class="text-small text-mute mt-4">${p.desc[this.currentLang] || p.desc.en}</p>
+        <div class="p-footer">
+          <span class="p-meta">📦 ${p.size}</span>
+          <button class="btn btn-gold btn-sm">${this.i18n[this.currentLang].buy_in_bot}</button>
         </div>
       `;
-    }).join("");
-  };
+      card.addEventListener("click", () => this.showDetailSheet(p));
+      list.appendChild(card);
+    });
+  }
 
-  searchInput.addEventListener("input", (e) => renderFiltered(e.target.value));
-  renderFiltered();
-}
+  showDetailSheet(p) {
+    const sheet = document.getElementById("bottom-sheet");
+    document.getElementById("sheet-p-title").textContent = p.name;
+    document.getElementById("sheet-p-price").textContent = p.price ? p.price + " ETB" : this.i18n[this.currentLang].ask_in_bot;
+    document.getElementById("sheet-p-size").textContent = `Size: ${p.size}`;
+    document.getElementById("sheet-p-compat").textContent = p.testedOn;
+    document.getElementById("sheet-p-desc").textContent = p.desc[this.currentLang] || p.desc.en;
+    document.getElementById("sheet-p-inside").textContent = p.whatIsInside[this.currentLang] || p.whatIsInside.en;
 
-// 3. LEARN SCREEN
-let currentLearnSegment = "tutorials";
-function renderLearnScreen(container) {
-  container.innerHTML = `
-    <div class="segment-bar">
-      <button class="segment-btn ${currentLearnSegment === 'tutorials' ? 'active' : ''}" onclick="switchLearnTab('tutorials')">
-        ${currentLang === "en" ? "Tutorials" : "ቪዲዮዎች"}
-      </button>
-      <button class="segment-btn ${currentLearnSegment === 'faq' ? 'active' : ''}" onclick="switchLearnTab('faq')">
-        ${currentLang === "en" ? "FAQ" : "ጥያቄዎች"}
-      </button>
-      <button class="segment-btn ${currentLearnSegment === 'guide' ? 'active' : ''}" onclick="switchLearnTab('guide')">
-        ${currentLang === "en" ? "Guide" : "መመሪያ"}
-      </button>
-    </div>
-    <div id="learn-tab-content"></div>
-  `;
+    const btn = document.getElementById("sheet-p-btn");
+    btn.href = p.botId ? `${this.state.links.bot}?start=buy_${p.botId}` : this.state.links.bot;
+    btn.textContent = this.i18n[this.currentLang].buy_in_bot;
 
-  renderLearnTabContent();
-}
+    sheet.classList.remove("hidden");
+  }
 
-window.switchLearnTab = function(segment) {
-  currentLearnSegment = segment;
-  document.querySelectorAll(".segment-btn").forEach((btn, idx) => {
-    btn.classList.toggle("active", (idx === 0 && segment === "tutorials") || (idx === 1 && segment === "faq") || (idx === 2 && segment === "guide"));
-  });
-  renderLearnTabContent();
-};
-
-function renderLearnTabContent() {
-  const cont = document.getElementById("learn-tab-content");
-  if (!cont) return;
-  const t = UI_I18N[currentLang];
-
-  if (currentLearnSegment === "tutorials") {
-    if (!activeData.tutorials || activeData.tutorials.length === 0) {
-      cont.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:30px;">${t.tut_empty}</p>`;
+  renderTutorials() {
+    const target = document.getElementById("tutorials-outlet");
+    target.innerHTML = "";
+    
+    if (!this.state.tutorials.length) {
+      target.innerHTML = `<div class="glass-card text-center">Videos coming soon.</div>`;
       return;
     }
 
-    const categories = [
-      { id: "how_to_buy", title: currentLang === "en" ? "How to buy" : "እንዴት እንደሚገዛ" },
-      { id: "save_and_use", title: currentLang === "en" ? "How to save and use" : "አጠቃቀም እና አቀማመጥ" },
-      { id: "other", title: currentLang === "en" ? "Other" : "ሌሎች" }
-    ];
+    const categories = [...new Set(this.state.tutorials.map(t => this.currentLang === "am" ? t.categoryAm : t.category))];
 
-    let renderedAny = false;
-    const catHtml = categories.map(cat => {
-      const items = activeData.tutorials.filter(x => x.category === cat.id);
-      if (items.length === 0) return "";
-      renderedAny = true;
+    categories.forEach(cat => {
+      const wrap = document.createElement("div");
+      wrap.className = "glass-card";
+      wrap.innerHTML = `<h4 class="gold-text mb-10">${cat}</h4>`;
 
-      const itemsHtml = items.map(item => {
-        const title = item.title?.[currentLang] || item.title?.en;
-        let mediaHtml = "";
+      this.state.tutorials.filter(t => (this.currentLang === "am" ? t.categoryAm : t.category) === cat).forEach(item => {
+        const title = item.title[this.currentLang] || item.title.en;
+        const row = document.createElement("div");
+        row.className = "tut-row mt-10";
 
-        if (item.url.includes("youtube") || item.url.includes("youtu.be")) {
-          mediaHtml = `
-            <div class="video-wrapper">
-              <iframe src="${item.url}" title="${title}" loading="lazy" allowfullscreen></iframe>
+        if (item.url.includes("youtube.com") || item.url.includes("youtu.be")) {
+          const ytId = item.url.split("v=")[1]?.split("&")[0] || item.url.split("youtu.be/")[1]?.split("?")[0];
+          row.innerHTML = `
+            <p class="text-small text-bold mb-4">▶ ${title}</p>
+            <div class="video-responsive">
+              <iframe src="https://www.youtube-nocookie.com/embed/${ytId}" loading="lazy" allowfullscreen title="${title}"></iframe>
             </div>
           `;
         } else if (item.url.endsWith(".mp4")) {
-          mediaHtml = `
-            <div class="video-wrapper">
-              <video src="${item.url}" controls preload="metadata"></video>
-            </div>
+          row.innerHTML = `
+            <p class="text-small text-bold mb-4">📹 ${title}</p>
+            <video controls preload="none" src="${item.url}" style="width:100%; border-radius: 12px; border:1px solid var(--border-muted);"></video>
           `;
         } else {
-          mediaHtml = `
-            <a href="${item.url}" class="btn-outline" style="margin-top:8px;" target="_blank" rel="noopener">
-              🔗 Open Tutorial
+          row.innerHTML = `
+            <a href="${item.url}" target="_blank" rel="noopener" class="btn btn-outline full-width flex-row flex-between">
+              <span>📹 ${title}</span> <span>🔗</span>
             </a>
           `;
         }
-
-        return `
-          <div class="glass-card" style="margin-bottom:12px;">
-            <h4 style="font-size:0.95rem;">${title}</h4>
-            ${mediaHtml}
-          </div>
-        `;
-      }).join("");
-
-      return `
-        <div style="margin-bottom:16px;">
-          <h3 style="color:var(--gold-primary); font-size:0.95rem; margin-bottom:8px;">${cat.title}</h3>
-          ${itemsHtml}
-        </div>
-      `;
-    }).join("");
-
-    cont.innerHTML = renderedAny ? catHtml : `<p style="text-align:center; color:var(--text-muted); padding:30px;">${t.tut_empty}</p>`;
-  } else if (currentLearnSegment === "faq") {
-    if (!activeData.faqs || activeData.faqs.length === 0) {
-      cont.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:30px;">${t.faq_empty}</p>`;
-      return;
-    }
-
-    cont.innerHTML = `
-      <div class="glass-card">
-        ${activeData.faqs.map(f => {
-          const q = f.q?.[currentLang] || f.q?.en;
-          const a = f.a?.[currentLang] || f.a?.en;
-          return `
-            <div class="faq-item" id="${f.id}">
-              <button class="faq-question" onclick="toggleFaq('${f.id}')">
-                <span>${q}</span>
-                <span class="faq-arrow">▼</span>
-              </button>
-              <div class="faq-answer">
-                <p>${a}</p>
-              </div>
-            </div>
-          `;
-        }).join("")}
-      </div>
-    `;
-  } else if (currentLearnSegment === "guide") {
-    cont.innerHTML = `
-      <div class="glass-card" style="margin-bottom:14px;">
-        <h3 style="color:var(--gold-primary); font-size:1rem; margin-bottom:8px;">
-          ${currentLang === "en" ? "How to buy (4 steps)" : "የአገዛዝ ቅደም ተከተል (4 ደረጃዎች)"}
-        </h3>
-        <div class="step-list">
-          ${activeData.howToBuySteps.map(s => `
-            <div class="step-row">
-              <span class="step-num">${s.step}</span>
-              <p style="font-size:0.85rem; color:var(--text-main);">${s[currentLang] || s.en}</p>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-
-      <div class="glass-card" style="margin-bottom:14px;">
-        <h3 style="color:var(--gold-primary); font-size:1rem; margin-bottom:8px;">
-          ${currentLang === "en" ? "How to use your files (3 steps)" : "ፋይሎችን አጠቃቀም (3 ደረጃዎች)"}
-        </h3>
-        <div class="step-list">
-          ${activeData.howToUseSteps.map(s => `
-            <div class="step-row">
-              <span class="step-num">${s.step}</span>
-              <p style="font-size:0.85rem; color:var(--text-main);">${s[currentLang] || s.en}</p>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-
-      <div class="glass-card">
-        <h3 style="color:var(--gold-primary); font-size:1rem; margin-bottom:4px;">
-          ${currentLang === "en" ? "Payment Accounts" : "የክፍያ አማራጮች"}
-        </h3>
-        <p style="font-size:0.8rem; color:var(--eth-yellow); margin-bottom:10px;">
-          ⚠️ ${activeData.paymentWarning?.[currentLang] || activeData.paymentWarning?.en}
-        </p>
-        ${activeData.paymentAccounts.map(acc => `
-          <div class="payment-card">
-            <div>
-              <div style="font-weight:700; font-size:0.85rem;">${acc.bank}</div>
-              <div style="font-size:0.85rem; color:var(--text-muted); font-family:monospace;">${acc.account} (${acc.holder})</div>
-            </div>
-            <button class="copy-btn" onclick="copyText('${acc.account}')">${t.copy}</button>
-          </div>
-        `).join("")}
-      </div>
-    `;
-  }
-}
-
-window.toggleFaq = function(id) {
-  const item = document.getElementById(id);
-  if (item) item.classList.toggle("open");
-};
-
-// 4. FREE SCREEN
-function renderFreeScreen(container) {
-  const t = UI_I18N[currentLang];
-  const samples = activeData.freeItems?.samples || [];
-  const apps = activeData.freeItems?.apps || [];
-  const note = activeData.freeItems?.note?.[currentLang] || activeData.freeItems?.note?.en;
-
-  container.innerHTML = `
-    <div class="glass-card" style="text-align:center; padding:18px;">
-      <span style="font-size:2rem;">🎁</span>
-      <h2 style="font-size:1.15rem; margin-top:6px;">${currentLang === "en" ? "Free Samples & Apps" : "ነፃ ናሙናዎች እና መተግበሪያዎች"}</h2>
-      <p style="font-size:0.85rem; color:var(--gold-primary); margin-top:4px;">${note}</p>
-    </div>
-
-    <div style="margin-top:10px;">
-      <h3 style="color:var(--gold-primary); font-size:0.95rem; margin-bottom:10px;">
-        ${currentLang === "en" ? "Free Samples" : "ነፃ ናሙና ስታይሎች"}
-      </h3>
-      ${samples.map(s => `
-        <div class="glass-card" style="margin-bottom:10px;">
-          <h4 style="font-size:0.95rem;">${s.name}</h4>
-          <p style="font-size:0.85rem; color:var(--text-muted); margin:4px 0 10px;">${s.desc?.[currentLang] || s.desc?.en}</p>
-          <a href="${s.botUrl}" class="btn-outline" target="_blank" rel="noopener">${t.open_bot}</a>
-        </div>
-      `).join("")}
-    </div>
-
-    <div style="margin-top:14px;">
-      <h3 style="color:var(--gold-primary); font-size:0.95rem; margin-bottom:10px;">
-        ${currentLang === "en" ? "Free Apps" : "ነፃ መተግበሪያዎች"}
-      </h3>
-      ${apps.map(a => `
-        <div class="glass-card" style="margin-bottom:10px;">
-          <h4 style="font-size:0.95rem;">${a.name}</h4>
-          <p style="font-size:0.85rem; color:var(--text-muted); margin:4px 0 10px;">${a.desc?.[currentLang] || a.desc?.en}</p>
-          <a href="${a.botUrl}" class="btn-outline" target="_blank" rel="noopener">${t.open_bot}</a>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-// 5. CONTACT SCREEN
-function renderContactScreen(container) {
-  const t = UI_I18N[currentLang];
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-  container.innerHTML = `
-    <div class="glass-card">
-      <h3 style="color:var(--gold-primary); font-size:1.05rem; margin-bottom:12px;">
-        ${currentLang === "en" ? "Get in Touch" : "አግኙን"}
-      </h3>
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        <a href="${activeData.links.support}" class="btn-gold" target="_blank" rel="noopener">💬 ${t.support_btn}</a>
-        <a href="tel:${activeData.links.phoneInt}" class="btn-outline">📞 Phone: ${activeData.links.phone}</a>
-        <a href="https://wa.me/${activeData.links.whatsapp}" class="btn-outline" target="_blank" rel="noopener">🟢 WhatsApp</a>
-        <a href="mailto:${activeData.links.email}" class="btn-outline">✉️ ${activeData.links.email}</a>
-        <a href="${activeData.links.channel}" class="btn-outline" target="_blank" rel="noopener">📢 ${t.channel_btn}</a>
-        <a href="${activeData.links.group}" class="btn-outline" target="_blank" rel="noopener">👥 ${t.group_btn}</a>
-      </div>
-    </div>
-
-    <div class="glass-card">
-      <h3 style="color:var(--gold-primary); font-size:1rem; margin-bottom:6px;">💰 ${t.referral_title}</h3>
-      <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
-        ${activeData.referral?.[currentLang] || activeData.referral?.en}
-      </p>
-    </div>
-
-    <div class="glass-card">
-      <h3 style="font-size:1rem; margin-bottom:6px;">👨‍💻 ${t.about_founder}</h3>
-      <p style="font-weight:700; font-size:0.95rem;">${activeData.founder.name}</p>
-      <p style="font-size:0.8rem; color:var(--gold-primary); margin-bottom:6px;">
-        📍 ${activeData.founder.location?.[currentLang] || activeData.founder.location?.en}
-      </p>
-      <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
-        ${activeData.founder.bio?.[currentLang] || activeData.founder.bio?.en}
-      </p>
-    </div>
-
-    <div class="glass-card" style="display:flex; flex-direction:column; gap:10px;">
-      <button class="btn-outline" onclick="shareApp()">🔗 ${t.share}</button>
-      <button id="pwa-install-btn" class="btn-gold" style="display:none;" onclick="installPWA()">📲 ${t.install}</button>
-      ${isIOS ? `<p style="font-size:0.75rem; color:var(--text-muted); text-align:center;">${t.ios_hint}</p>` : ""}
-    </div>
-  `;
-
-  if (deferredInstallPrompt) {
-    const btn = document.getElementById("pwa-install-btn");
-    if (btn) btn.style.display = "inline-flex";
-  }
-}
-
-// 6. OWNER EDITOR SCREEN (#editor)
-function renderEditorScreen(container) {
-  const t = UI_I18N[currentLang];
-  container.innerHTML = `
-    <div class="glass-card">
-      <h2 style="font-size:1.15rem; color:var(--gold-primary);">${t.editor_title}</h2>
-      <p style="font-size:0.8rem; color:var(--text-muted); margin-top:6px; line-height:1.4;">${t.editor_note}</p>
-      <div style="display:flex; gap:10px; margin-top:14px;">
-        <button class="btn-gold" onclick="copyDataJS()">📋 Copy data.js</button>
-        <button class="btn-outline" onclick="downloadDataJS()">💾 Download data.js</button>
-      </div>
-    </div>
-
-    <div class="glass-card">
-      <h3 style="font-size:1rem; margin-bottom:8px;">Banner Notice Text</h3>
-      <label style="font-size:0.8rem; color:var(--text-muted);">English:</label>
-      <input type="text" id="ed-banner-en" class="editor-input" value="${activeData.announcement?.en || ''}">
-      <label style="font-size:0.8rem; color:var(--text-muted);">Amharic:</label>
-      <input type="text" id="ed-banner-am" class="editor-input" value="${activeData.announcement?.am || ''}">
-      <button class="btn-outline" onclick="saveBannerEdits()">Update Banner Memory</button>
-    </div>
-
-    <div class="glass-card">
-      <h3 style="font-size:1rem; margin-bottom:8px;">Products Price Manager</h3>
-      <div id="ed-products-list"></div>
-    </div>
-  `;
-
-  const pContainer = document.getElementById("ed-products-list");
-  pContainer.innerHTML = activeData.products.map((p, idx) => `
-    <div style="border:1px solid var(--border-glass); border-radius:10px; padding:10px; margin-bottom:10px;">
-      <p><strong>${p.name}</strong> (Bot ID: ${p.botId || 'none'})</p>
-      <label style="font-size:0.8rem;">Price (ETB - leave blank for 'Ask in bot'):</label>
-      <input type="number" id="ed-price-${idx}" class="editor-input" value="${p.price !== null ? p.price : ''}" placeholder="null">
-      <button class="btn-outline" onclick="updateProductPrice(${idx})">Save Price</button>
-    </div>
-  `).join("");
-}
-
-window.saveBannerEdits = function() {
-  activeData.announcement = {
-    en: document.getElementById("ed-banner-en").value,
-    am: document.getElementById("ed-banner-am").value
-  };
-  renderAnnouncement();
-  showToast("Banner updated in memory!");
-};
-
-window.updateProductPrice = function(index) {
-  const val = document.getElementById(`ed-price-${index}`).value;
-  activeData.products[index].price = val === "" ? null : Number(val);
-  showToast("Price updated in memory!");
-};
-
-window.copyDataJS = function() {
-  const jsContent = "const LIVE_API_URL = " + JSON.stringify(LIVE_API_URL) + ";\n\nconst APP_DATA = " + JSON.stringify(activeData, null, 2) + ";";
-  navigator.clipboard.writeText(jsContent).then(() => showToast("data.js copied to clipboard!"));
-};
-
-window.downloadDataJS = function() {
-  const jsContent = "const LIVE_API_URL = " + JSON.stringify(LIVE_API_URL) + ";\n\nconst APP_DATA = " + JSON.stringify(activeData, null, 2) + ";";
-  const blob = new Blob([jsContent], { type: "text/javascript" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "data.js";
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast("data.js downloaded!");
-};
-
-// Sheet Detail Modal
-window.openProductSheet = function(productId) {
-  const p = activeData.products.find(x => x.id === productId);
-  if (!p) return;
-  const t = UI_I18N[currentLang];
-  const priceText = p.price ? `${p.price} ETB` : t.ask_in_bot;
-  const buyUrl = p.botId ? `${activeData.links.bot}?start=buy_${p.botId}` : activeData.links.bot;
-  const shortD = p.shortDesc?.[currentLang] || p.shortDesc?.en;
-  const fullD = p.fullDesc?.[currentLang] || p.fullDesc?.en;
-
-  const content = document.getElementById("sheet-content");
-  content.innerHTML = `
-    <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;">
-      <h2 id="sheet-title" style="font-size:1.3rem;">${p.name}</h2>
-      <span class="product-price">${priceText}</span>
-    </div>
-    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:14px;">${shortD}</p>
-
-    <div style="display:flex; gap:16px; margin-bottom:16px; font-size:0.85rem; color:var(--gold-primary);">
-      <span>📦 ${t.size}: <strong>${p.size}</strong></span>
-      <span>🎹 ${t.tested_on}: <strong>${p.testedOn || 'ORG 25'}</strong></span>
-    </div>
-
-    ${fullD ? `
-      <div style="margin-bottom:18px;">
-        <h4 style="font-size:0.95rem; margin-bottom:4px;">${t.what_inside}</h4>
-        <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">${fullD}</p>
-      </div>
-    ` : ""}
-
-    <a href="${buyUrl}" class="btn-gold" target="_blank" rel="noopener">
-      ${t.buy_in_bot}
-    </a>
-  `;
-
-  document.getElementById("detail-sheet-backdrop").classList.add("open");
-};
-
-function closeSheet() {
-  document.getElementById("detail-sheet-backdrop").classList.remove("open");
-}
-
-// Global Helpers
-window.copyText = function(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    showToast(UI_I18N[currentLang].copied);
-  }).catch(() => {
-    showToast(text);
-  });
-};
-
-window.showToast = function(msg) {
-  const toast = document.getElementById("toast");
-  toast.textContent = msg;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2600);
-};
-
-window.shareApp = function() {
-  if (navigator.share) {
-    navigator.share({
-      title: "ORG 25 PRO",
-      text: "Ethiopia's #1 Keyboard Style & Rhythm Store for ORG 25",
-      url: window.location.href
-    }).catch(() => {});
-  } else {
-    copyText(window.location.href);
-  }
-};
-
-window.installPWA = function() {
-  if (deferredInstallPrompt) {
-    deferredInstallPrompt.prompt();
-    deferredInstallPrompt.userChoice.then(() => {
-      deferredInstallPrompt = null;
-      const btn = document.getElementById("pwa-install-btn");
-      if (btn) btn.style.display = "none";
+        wrap.appendChild(row);
+      });
+      target.appendChild(wrap);
     });
   }
-};
 
-// Service Worker
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
-  });
+  renderFAQ() {
+    const target = document.getElementById("faqs-outlet");
+    target.innerHTML = "";
+    this.state.faqs.forEach((item, index) => {
+      const card = document.createElement("div");
+      card.className = "glass-card accordion-item";
+      card.innerHTML = `
+        <button class="accordion-trigger" aria-expanded="false" data-idx="${index}">
+          <span>${item.q[this.currentLang] || item.q.en}</span>
+          <span class="chevron">▼</span>
+        </button>
+        <div id="faq-ans-${index}" class="accordion-panel">${item.a[this.currentLang] || item.a.en}</div>
+      `;
+      card.querySelector(".accordion-trigger").addEventListener("click", (e) => {
+        const tBtn = e.currentTarget;
+        const panel = document.getElementById(`faq-ans-${tBtn.dataset.idx}`);
+        const closed = panel.classList.contains("active");
+        
+        document.querySelectorAll(".accordion-panel").forEach(p => p.classList.remove("active"));
+        document.querySelectorAll(".accordion-trigger").forEach(b => b.setAttribute("aria-expanded", "false"));
+        document.querySelectorAll(".chevron").forEach(c => c.textContent = "▼");
+
+        if (!closed) {
+          panel.classList.add("active");
+          tBtn.setAttribute("aria-expanded", "true");
+          tBtn.querySelector(".chevron").textContent = "▲";
+        }
+      });
+      target.appendChild(card);
+    });
+  }
+
+  renderGuide() {
+    const buyList = document.getElementById("guide-buy-steps");
+    buyList.innerHTML = "";
+    const bSteps = this.state.howToBuySteps[this.currentLang] || this.state.howToBuySteps.en;
+    bSteps.forEach(st => { buyList.innerHTML += `<li>${st}</li>`; });
+
+    const useList = document.getElementById("guide-use-steps");
+    useList.innerHTML = "";
+    const uSteps = this.state.howToUseSteps[this.currentLang] || this.state.howToUseSteps.en;
+    uSteps.forEach(st => { useList.innerHTML += `<li>${st}</li>`; });
+
+    document.getElementById("payment-warning").textContent = this.state.paymentWarning[this.currentLang] || this.state.paymentWarning.en;
+
+    const accList = document.getElementById("accounts-outlet");
+    accList.innerHTML = "";
+    this.state.paymentAccounts.forEach(acc => {
+      const c = document.createElement("div");
+      c.className = "glass-card flex-row flex-between";
+      c.innerHTML = `
+        <div>
+          <h5 class="gold-text">${acc.provider}</h5>
+          <span class="text-mono" style="font-size:1.1rem;font-weight:800">${acc.account}</span>
+          <p class="text-mute text-small">Name: ${acc.holder}</p>
+        </div>
+        <button class="btn btn-outline btn-sm copy-target" data-copy="${acc.account}">${this.i18n[this.currentLang].copy}</button>
+      `;
+      accList.appendChild(c);
+    });
+  }
+
+  renderFree() {
+    const sOutlet = document.getElementById("samples-outlet");
+    sOutlet.innerHTML = "";
+    this.state.freeSamples.forEach(sample => {
+      sOutlet.innerHTML += `
+        <div class="glass-card flex-row flex-between">
+          <div>
+            <h5>${sample.name}</h5>
+            <span class="text-mute text-small">Size: ${sample.size}</span>
+          </div>
+          <a href="${sample.url}" target="_blank" rel="noopener" class="btn btn-gold btn-sm">Get Pack</a>
+        </div>
+      `;
+    });
+
+    const tOutlet = document.getElementById("tools-outlet");
+    tOutlet.innerHTML = "";
+    this.state.freeApps.forEach(tool => {
+      tOutlet.innerHTML += `
+        <div class="glass-card flex-row flex-between">
+          <div>
+            <h5>${tool.name}</h5>
+            <span class="text-mute text-small">${tool.desc}</span>
+          </div>
+          <a href="${tool.url}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Download</a>
+        </div>
+      `;
+    });
+
+    // Contact setup
+    document.getElementById("referral-desc").textContent = this.state.referralText[this.currentLang] || this.state.referralText.en;
+    document.getElementById("founder-name").textContent = this.state.founder.name;
+    document.getElementById("founder-loc").textContent = this.state.founder.location[this.currentLang] || this.state.founder.location.en;
+    document.getElementById("founder-bio").textContent = this.state.founder.bio[this.currentLang] || this.state.founder.bio.en;
+  }
+
+  registerPWA() {
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+  }
+
+  // ================= ADMIN CONTROLLER (#editor) =================
+  bindAdmin() {
+    document.getElementById("btn-add-style").addEventListener("click", () => {
+      this.state.products.push({
+        id: "style_" + Date.now(),
+        botId: "",
+        name: "New Custom Pack",
+        featured: false,
+        price: null,
+        size: "0 MB",
+        desc: { en: "Description EN", am: "መግለጫ አማርኛ" },
+        whatIsInside: { en: "Pack specs", am: "ይዘቶች" },
+        testedOn: "ORG 25"
+      });
+      this.renderOwnerAdmin();
+    });
+
+    document.getElementById("btn-add-tut").addEventListener("click", () => {
+      this.state.tutorials.push({
+        id: "tut_" + Date.now(),
+        category: "Other",
+        categoryAm: "ሌሎች",
+        title: { en: "How-to tutorial title", am: "መመሪያ ቪዲዮ ርዕስ" },
+        url: "https://www.youtube.com/watch?v=EXAMPLE"
+      });
+      this.renderOwnerAdmin();
+    });
+
+    document.getElementById("btn-add-faq").addEventListener("click", () => {
+      this.state.faqs.push({
+        id: "faq_" + Date.now(),
+        q: { en: "The Question?", am: "ጥያቄ?" },
+        a: { en: "The answer answer.", am: "የጥያቄው መልስ።" }
+      });
+      this.renderOwnerAdmin();
+    });
+
+    const exportDataJs = () => {
+      return `// Updated Store Configuration\nconst LIVE_API_URL = "${LIVE_API_URL}";\n\nconst STORE_DATA = ${JSON.stringify(this.state, null, 2)};\n`;
+    };
+
+    document.getElementById("btn-copy-config").addEventListener("click", () => {
+      navigator.clipboard.writeText(exportDataJs()).then(() => {
+        this.fireToast("Configuration copied!");
+      });
+    });
+
+    document.getElementById("btn-download-config").addEventListener("click", () => {
+      const blob = new Blob([exportDataJs()], { type: "text/javascript" });
+      const url = URL.createObjectURL(blob);
+      const temp = document.createElement("a");
+      temp.href = url;
+      temp.download = "data.js";
+      temp.click();
+      URL.revokeObjectURL(url);
+      this.fireToast("Configuration downloaded!");
+    });
+  }
+
+  renderOwnerAdmin() {
+    // Sync Announcements Input
+    document.getElementById("ed-notice-en").value = this.state.notice.en || "";
+    document.getElementById("ed-notice-am").value = this.state.notice.am || "";
+
+    const nEn = document.getElementById("ed-notice-en");
+    const nAm = document.getElementById("ed-notice-am");
+
+    const updateNotice = () => {
+      this.state.notice = { en: nEn.value, am: nAm.value };
+    };
+    nEn.oninput = updateNotice;
+    nAm.oninput = updateNotice;
+
+    // Direct binding for items delete and inline values
+    const sTarget = document.getElementById("ed-styles-outlet");
+    sTarget.innerHTML = "";
+    this.state.products.forEach((p, index) => {
+      const wrap = document.createElement("div");
+      wrap.className = "edit-box mt-10";
+      wrap.innerHTML = `
+        <div class="flex-row flex-between">
+          <input type="text" class="input-glow" style="width: 70%" value="${p.name}" placeholder="Title">
+          <button class="btn btn-outline btn-sm">Delete</button>
+        </div>
+      `;
+      wrap.querySelector("input").addEventListener("input", (e) => {
+        this.state.products[index].name = e.target.value;
+      });
+      wrap.querySelector("button").addEventListener("click", () => {
+        this.state.products.splice(index, 1);
+        this.renderOwnerAdmin();
+      });
+      sTarget.appendChild(wrap);
+    });
+
+    // Tutorials Bind
+    const tTarget = document.getElementById("ed-tutorials-outlet");
+    tTarget.innerHTML = "";
+    this.state.tutorials.forEach((tut, index) => {
+      const wrap = document.createElement("div");
+      wrap.className = "edit-box mt-10";
+      wrap.innerHTML = `
+        <div class="flex-row flex-between">
+          <input type="text" class="input-glow" style="width: 70%" value="${tut.title.en}" placeholder="Video Title">
+          <button class="btn btn-outline btn-sm">Delete</button>
+        </div>
+      `;
+      wrap.querySelector("input").addEventListener("input", (e) => {
+        this.state.tutorials[index].title.en = e.target.value;
+      });
+      wrap.querySelector("button").addEventListener("click", () => {
+        this.state.tutorials.splice(index, 1);
+        this.renderOwnerAdmin();
+      });
+      tTarget.appendChild(wrap);
+    });
+
+    // FAQs Bind
+    const fTarget = document.getElementById("ed-faqs-outlet");
+    fTarget.innerHTML = "";
+    this.state.faqs.forEach((item, index) => {
+      const wrap = document.createElement("div");
+      wrap.className = "edit-box mt-10";
+      wrap.innerHTML = `
+        <div class="flex-row flex-between">
+          <input type="text" class="input-glow" style="width: 70%" value="${item.q.en}" placeholder="Question">
+          <button class="btn btn-outline btn-sm">Delete</button>
+        </div>
+      `;
+      wrap.querySelector("input").addEventListener("input", (e) => {
+        this.state.faqs[index].q.en = e.target.value;
+      });
+      wrap.querySelector("button").addEventListener("click", () => {
+        this.state.faqs.splice(index, 1);
+        this.renderOwnerAdmin();
+      });
+      fTarget.appendChild(wrap);
+    });
+  }
 }
+
+// Kickstart UI Platform
+window.addEventListener("DOMContentLoaded", () => {
+  const kernel = new AppEngine();
+  kernel.init();
+});
